@@ -1,0 +1,3 @@
+59d39487c3589843b410322d8a3d562ce022aba1e5ccb16898ef3fb2a0da2ecd  supabase.js
+# @supabase/supabase-js 2.117.2 の dist/umd/supabase.js をそのまま同梱（npm pack・npm の integrity sha512-eSG2VKnHR+Clp1PmidZ1/weJ8PJwoybjva3L2GgKqFG4YDS1Iqmc61psKGZP5xw6OMT2O7ZorPR42PY6q1BOXg==）
+# 確認: auth.oauth.getAuthorizationDetails / approveAuthorization / denyAuthorization と skipBrowserRedirect が入っている（2026-10-04）

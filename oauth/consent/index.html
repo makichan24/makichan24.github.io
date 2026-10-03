@@ -2,25 +2,72 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <!-- 読み込んでよいものを制限する（インラインの script・外部の CDN は使わない）。frame-ancestors は meta では効かないので、埋め込みの拒否は consent.js で行う -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://igastlbpzmxywvkizmcs.supabase.co; img-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>MAKKI Gate Authorization</title>
+  <title>MAKKI Gate 接続の確認</title>
+  <link rel="stylesheet" href="consent.css">
+  <script src="vendor/supabase.js" defer></script>
+  <script type="module" src="consent.js"></script>
 </head>
-<body>
+<!-- 埋め込まれた画面では表示しないよう、最初は hidden。consent.js が最上位の画面であることを確かめてから表示する -->
+<body hidden>
   <main>
-    <h1>MAKKI Gate Authorization</h1>
-    <p>Consent page test</p>
-    <p id="authorization-id"></p>
+    <h1>MAKKI Gate 接続の確認</h1>
+    <noscript><p>この画面には JavaScript が必要です。</p></noscript>
+
+    <section id="screen-loading">
+      <p>読み込んでいます。</p>
+    </section>
+
+    <section id="screen-error" hidden>
+      <p id="error-message" class="message"></p>
+    </section>
+
+    <section id="screen-signin" hidden>
+      <h2>ログイン</h2>
+      <form id="signin-form" novalidate>
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="username" required>
+        <label for="password">パスワード</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">ログイン</button>
+      </form>
+      <p id="signin-message" class="message"></p>
+    </section>
+
+    <section id="screen-mfa" hidden>
+      <h2>確認コード</h2>
+      <form id="mfa-form" novalidate>
+        <label for="totp">6桁の確認コード</label>
+        <input id="totp" name="totp" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required>
+        <button type="submit">確認</button>
+      </form>
+      <p id="mfa-message" class="message"></p>
+    </section>
+
+    <section id="screen-consent" hidden>
+      <h2>このアプリに接続を許可しますか</h2>
+      <dl>
+        <dt>アプリ</dt>
+        <dd id="client-name"></dd>
+        <dt>戻り先</dt>
+        <dd id="redirect-uri"></dd>
+        <dt>範囲（scope）</dt>
+        <dd id="scope"></dd>
+      </dl>
+      <p id="approve-unavailable" class="message" hidden>このアプリは許可の対象に登録されていません。拒否だけできます。</p>
+      <div class="actions">
+        <button id="approve" type="button" hidden disabled>許可する</button>
+        <button id="deny" type="button">拒否する</button>
+      </div>
+    </section>
+
+    <section id="screen-done" hidden>
+      <p id="done-message" class="message"></p>
+    </section>
   </main>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const authorizationId = params.get("authorization_id");
-
-    document.getElementById("authorization-id").textContent =
-      authorizationId
-        ? "authorization_id: " + authorizationId
-        : "authorization_id: not provided";
-  </script>
 </body>
 </html>

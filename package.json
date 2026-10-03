@@ -1,0 +1,9 @@
+{
+  "name": "makichan24-github-io",
+  "private": true,
+  "type": "module",
+  "description": "MAKKI Gate の OAuth 同意画面（GitHub Pages）。テストは Node 25 の node --test（追加の部品なし）",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
