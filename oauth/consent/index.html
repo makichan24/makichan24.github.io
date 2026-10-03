@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>MAKKI Gate Authorization</title>
+</head>
+<body>
+  <main>
+    <h1>MAKKI Gate Authorization</h1>
+    <p>Consent page test</p>
+    <p id="authorization-id"></p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const authorizationId = params.get("authorization_id");
+
+    document.getElementById("authorization-id").textContent =
+      authorizationId
+        ? "authorization_id: " + authorizationId
+        : "authorization_id: not provided";
+  </script>
+</body>
+</html>
